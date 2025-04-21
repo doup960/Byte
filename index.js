@@ -1,6 +1,8 @@
+// Import the necessary libraries
 const { Client, GatewayIntentBits } = require('discord.js');
-require('dotenv').config();
+require('dotenv').config();  // Load the .env file
 
+// Create a new Discord client instance
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -9,14 +11,21 @@ const client = new Client({
     ]
 });
 
+// Bot event when it's ready
 client.once('ready', () => {
     console.log('Bot is ready!');
 });
 
+// Bot event when it receives a message
 client.on('messageCreate', (message) => {
-    if (message.content === 'Hello') {
-        message.reply('Hi! How can I help you?');
+    // Prevent the bot from responding to its own messages
+    if (message.author.bot) return;
+
+    // Check if the message is "hi", case-insensitive
+    if (message.content.toLowerCase() === 'hi') {
+        message.reply('Hello! How may I help you?');
     }
 });
 
-client.login(process.env.token);
+// Log in to Discord with the token from the .env file
+client.login(process.env.token);  // Replace with your token variable name
