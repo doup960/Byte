@@ -1,0 +1,13 @@
+{
+  "name": "Byte",
+  "version": "1.0.0",
+  "description": "Byte, by doup96",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.0.0",
+    "dotenv": "^10.0.0"
+  }
+}
