@@ -1,5 +1,6 @@
 // Import the necessary libraries
 const { Client, GatewayIntentBits } = require('discord.js');
+const fs = require('fs');  // We will use this to read/write the version to a file
 require('dotenv').config();  // Load the .env file
 
 // Create a new Discord client instance
@@ -11,15 +12,32 @@ const client = new Client({
     ]
 });
 
-// Version variable
-let version = 0;  // Start at v0
+// File path for storing the version
+const versionFilePath = './version.txt';
 
-// Store roles with admin privileges
-const adminRoles = new Map();  // Map to store which role IDs can use specific commands
+// Function to get the current version
+function getVersion() {
+    try {
+        // Read the version from the version file, defaulting to v0 if the file doesn't exist
+        const version = fs.readFileSync(versionFilePath, 'utf8');
+        return parseInt(version);
+    } catch (error) {
+        // If the version file doesn't exist or there's an error, start from v0
+        return 0;
+    }
+}
+
+// Function to save the version to the version file
+function saveVersion(version) {
+    fs.writeFileSync(versionFilePath, version.toString(), 'utf8');
+}
 
 // Function to increment the version
 function incrementVersion() {
-    version++;
+    let version = getVersion();  // Get the current version
+    version++;  // Increment the version
+    saveVersion(version);  // Save the updated version back to the file
+    return version;  // Return the new version
 }
 
 // Bot event when it's ready
@@ -27,7 +45,7 @@ client.once('ready', async () => {
     console.log('Bot is ready!');
 
     // Increment the version every time the bot starts
-    incrementVersion();
+    const version = incrementVersion();  // Get and increment the version
 
     // Find the guild (server) by ID
     const guild = await client.guilds.fetch('1360706850042941500');
