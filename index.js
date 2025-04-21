@@ -1,120 +1,79 @@
-// Import the necessary libraries
 const { Client, GatewayIntentBits } = require('discord.js');
-const fs = require('fs');  // We will use this to read/write the version to a file
-require('dotenv').config();  // Load the .env file
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
+const adminRoles = new Set();  // Define adminRoles here
 
-// Create a new Discord client instance
-const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent
-    ]
-});
-
-// File path for storing the version
-const versionFilePath = './version.txt';
-
-// Function to get the current version
-function getVersion() {
-    try {
-        // Read the version from the version file, defaulting to v0 if the file doesn't exist
-        const version = fs.readFileSync(versionFilePath, 'utf8');
-        return parseInt(version);
-    } catch (error) {
-        // If the version file doesn't exist or there's an error, start from v0
-        return 0;
-    }
-}
-
-// Function to save the version to the version file
-function saveVersion(version) {
-    fs.writeFileSync(versionFilePath, version.toString(), 'utf8');
-}
-
-// Function to increment the version
-function incrementVersion() {
-    let version = getVersion();  // Get the current version
-    version++;  // Increment the version
-    saveVersion(version);  // Save the updated version back to the file
-    return version;  // Return the new version
-}
-
-// Bot event when it's ready
-client.once('ready', async () => {
+// When bot goes online
+client.once('ready', () => {
     console.log('Bot is ready!');
-
-    // Increment the version every time the bot starts
-    const version = incrementVersion();  // Get and increment the version
-
-    // Find the guild (server) by ID
-    const guild = await client.guilds.fetch('1360706850042941500');
-    
-    // Find the specific channel to send the message to
-    const channel = await guild.channels.fetch('1363672290872656136');  // Updated channel ID
-    
-    // Send the "Bot is online!" message along with the version
-    channel.send(`🟢 Bot is online! Current Version: v${version}`);
+    // Send the version message in a specific channel when the bot is online
+    const channel = client.channels.cache.get('1363672290872656136');
+    channel.send(`🟢 Bot is online! Version: v${getCurrentVersion()}`);
 });
 
-// Bot event when it receives a message
+// Command handling
 client.on('messageCreate', async (message) => {
-    // Prevent the bot from responding to its own messages
     if (message.author.bot) return;
 
-    // Set the prefix
     const prefix = 'b!';
-
-    // Ignore messages that don't start with the prefix
     if (!message.content.startsWith(prefix)) return;
 
-    // Get the command part of the message
     const args = message.content.slice(prefix.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();
 
-    // Check if the message is "hi", case-insensitive
+    // Handle "hi" command
     if (command === 'hi') {
-        message.reply('Hello! How may I help you?');
+        await message.reply('Hello! How may I help you?');
     }
 
-    // Admin command to set roles with special permissions
+    // Handle "admin" command
     if (command === 'admin') {
-        // Only allow server owner to use this command
-        if (message.author.id === message.guild.ownerId) {
-            // Get the role ID from the arguments
-            const roleId = args[0];
-            if (!roleId) return message.reply('Please provide a role ID.');
-
-            // Store the role ID with the permission
-            adminRoles.set(roleId, true);
-            message.reply(`Role <@&${roleId}> can now run special commands.`);
-        } else {
-            message.reply('Only the server owner can set admin roles.');
+        if (message.author.id !== message.guild.ownerId) {
+            return message.reply('Only the server owner can use this command.');
         }
-    }
 
-    // Role command to give the role to the user
-    if (command === 'role') {
-        // Check if the user has the correct admin role
         const roleId = args[0];
         if (!roleId) return message.reply('Please provide a role ID.');
 
-        // Check if the role has admin permissions
+        adminRoles.add(roleId);
+        message.reply(`Role <@&${roleId}> can now run special commands.`);
+    }
+
+    // Handle "role" command
+    if (command === 'role') {
+        const roleId = args[0];
+        if (!roleId) return message.reply('Please provide a role ID.');
+
+        // Check if the role is authorized
         if (!adminRoles.has(roleId)) return message.reply('You do not have permission to use this command.');
 
-        // Check if the role exists in the server
-        const role = message.guild.roles.cache.get(roleId);
-        if (!role) return message.reply('Role not found in this server.');
-
-        // Add the role to the user
         try {
+            const role = message.guild.roles.cache.get(roleId);
+            if (!role) return message.reply('Role not found in this server.');
+
             await message.member.roles.add(role);
             message.reply(`You have been given the <@&${roleId}> role.`);
         } catch (error) {
-            message.reply('There was an error adding the role.');
+            console.error(error);
+            message.reply('An error occurred while processing the role command.');
         }
     }
 });
 
-// Log in to Discord with the token from the .env file
-client.login(process.env.token);  // Replace with your token variable name
+// Bot login
+client.login(process.env.token);
+
+// Version management (read from version.txt)
+function getCurrentVersion() {
+    const fs = require('fs');
+    const versionFile = './version.txt';
+
+    if (!fs.existsSync(versionFile)) {
+        fs.writeFileSync(versionFile, '0'); // Create version file if it doesn't exist
+    }
+
+    let version = fs.readFileSync(versionFile, 'utf-8').trim();
+    version = parseInt(version) + 1; // Increment version by 1
+    fs.writeFileSync(versionFile, version.toString()); // Save updated version to file
+
+    return version;
+}
