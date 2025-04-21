@@ -1,5 +1,5 @@
 {
-  "mainRules": {
+  "mainrules": {
     "content": null,
     "embeds": [
       {
@@ -67,7 +67,7 @@
       }
     ]
   },
-  "serverRules": {
+  "serverrules": {
     "content": null,
     "embeds": [
       {
@@ -116,7 +116,7 @@
     ],
     "components": null
   },
-  "vcRules": {
+  "vcrules": {
     "content": null,
     "embeds": [
       {
