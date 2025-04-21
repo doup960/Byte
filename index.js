@@ -12,8 +12,17 @@ const client = new Client({
 });
 
 // Bot event when it's ready
-client.once('ready', () => {
+client.once('ready', async () => {
     console.log('Bot is ready!');
+
+    // Find the guild (server) by ID
+    const guild = await client.guilds.fetch('1360706850042941500');
+    
+    // Find the specific channel to send the message to
+    const channel = await guild.channels.fetch('1363672290872656136');  // Updated channel ID
+    
+    // Send the "Bot is online!" message
+    channel.send('🟢 Bot is online!');
 });
 
 // Bot event when it receives a message
