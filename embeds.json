@@ -1,0 +1,159 @@
+{
+  "mainRules": {
+    "content": null,
+    "embeds": [
+      {
+        "author": {
+          "name": "Welcome to doup96's Hangout!"
+        },
+        "title": "📌 RULES & INFO",
+        "description": "Please read and follow all the rules below to keep the server safe, fun, and respectful for everyone.",
+        "color": 255,
+        "fields": [
+          {
+            "name": "📜 Server Rules:",
+            "value": "Basic server-wide rules. Respect others, avoid spam, no NSFW, and follow staff instructions. Respect others, avoid spam, and help maintain a friendly environment.",
+            "inline": true
+          },
+          {
+            "name": "🎧 Voice Chat Rules:",
+            "value": "When using voice channels, be respectful and responsible. No mic abuse, no trolling, and always follow the main server rules.",
+            "inline": true
+          },
+          {
+            "name": "📄 Terms Of Service:",
+            "value": "Do **NOT** violate Roblox’s [Terms of Service](https://en.help.roblox.com/hc/en-us/articles/115004647846-Roblox-Terms-of-Use) or Discord’s [Terms of Service](https://discord.com/terms). Doing so may result in punishment.",
+            "inline": false
+          },
+          {
+            "name": "⚠️ Strike System:",
+            "value": "**Verbal Warning** – Nothing\n**1 Warning** – Nothing\n**2 Warnings** – 1h mute\n**3 Warnings** – 6h mute\n**4 Warnings** – 1d mute\n**5 Warnings** – Ban",
+            "inline": true
+          },
+          {
+            "name": "🛡️ Chain Of Command:",
+            "value": [
+              "- <@&1334982619263275078> — Owner | doup96",
+              "- <@&1337947009000276142> — Community Manager",
+              "- <@&1359699614701322280> — Head Administrator",
+              "- <@&1359699659659940024> — Senior Administrator",
+              "- <@&1334002237747363860> — Administrator",
+              "- <@&1359699699346575551> — Senior Moderator",
+              "- <@&1337957871496724593> — Moderator",
+              "- <@&1335412058698547362> — Trial Moderator"
+            ],
+            "inline": true
+          }
+        ]
+      }
+    ],
+    "components": [
+      {
+        "type": 1,
+        "components": [
+          {
+            "type": 2,
+            "style": 4,
+            "label": "📜 Server Rules",
+            "custom_id": "serverrules"
+          },
+          {
+            "type": 2,
+            "style": 1,
+            "label": "🎧 Voice Chat Rules",
+            "custom_id": "voicechatrules"
+          }
+        ]
+      }
+    ]
+  },
+  "serverRules": {
+    "content": null,
+    "embeds": [
+      {
+        "title": "📜 Server Rules",
+        "description": "Welcome to the server! Please follow these rules to keep the community safe and enjoyable for everyone.",
+        "color": 255,
+        "fields": [
+          {
+            "name": "🔹 Keep It Friendly",
+            "value": "Be respectful to everyone. Harassment, discrimination, or hate speech is not tolerated."
+          },
+          {
+            "name": "🔹 Follow Staff Instructions",
+            "value": "Listen to server staff. Ignoring them may result in warnings or bans."
+          },
+          {
+            "name": "🔹 No Off-Topic Disruptions",
+            "value": "Use channels correctly and keep conversations relevant."
+          },
+          {
+            "name": "🔹 No NSFW Content",
+            "value": "NSFW content of any kind (text, images, or media) is strictly prohibited."
+          },
+          {
+            "name": "🔹 No Flooding or Spam",
+            "value": "Avoid excessive messages, self-promotion, and disruptive spam."
+          },
+          {
+            "name": "🔹 Keep It Civil",
+            "value": "No trolling, flaming, or intentional arguments."
+          },
+          {
+            "name": "🔹 Protect Your Privacy",
+            "value": "Do not share personal details like addresses, phone numbers, or social media."
+          },
+          {
+            "name": "🔹 Keep Language Clean",
+            "value": "Use appropriate language. Keep conversations suitable for all audiences."
+          },
+          {
+            "name": "⚠️ Consequences for Rule Violations",
+            "value": "Breaking rules may result in warnings, mutes, kicks, or bans. Ask a moderator if you're unsure."
+          }
+        ]
+      }
+    ],
+    "components": null
+  },
+  "vcRules": {
+    "content": null,
+    "embeds": [
+      {
+        "title": "🎧 Voice Chat Rules",
+        "description": "Please follow these guidelines when using voice channels to keep the experience enjoyable for everyone.",
+        "color": 255,
+        "fields": [
+          {
+            "name": "🔹 No Mic Spamming or Blasting",
+            "value": "Do not blast music, scream, or create disruptive noise in voice chat. Use push-to-talk if needed."
+          },
+          {
+            "name": "🔹 Follow All Server Rules",
+            "value": "The main server rules still apply in voice chat. Disrespect, trolling, or inappropriate behavior won't be tolerated."
+          },
+          {
+            "name": "🔹 Be Respectful While Speaking",
+            "value": "Don't talk over others or dominate the conversation. Let everyone have a chance to speak."
+          },
+          {
+            "name": "🔹 Use Common Sense",
+            "value": "If you're unsure whether something's okay to say or do, play it safe and don’t do it."
+          },
+          {
+            "name": "🔹 Keep Conversations Appropriate",
+            "value": "Avoid discussions or jokes that are offensive or inappropriate for the server’s audience."
+          },
+          {
+            "name": "🔹 Use Voice Channels Responsibly",
+            "value": "Please be mindful of others using the voice channel. Avoid speaking excessively or engaging in disruptive behavior."
+          }
+        ],
+        "footer": {
+          "text": "Breaking voice chat rules can result in being muted, kicked, or banned from VC."
+        }
+      }
+    ],
+    "components": null
+  }
+}
