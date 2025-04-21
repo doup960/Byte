@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits } = require('discord.js');
+const { Client, GatewayIntentBits, MessageActionRow, MessageButton } = require('discord.js');
 const fs = require('fs');
 require('dotenv').config();
 
@@ -11,6 +11,13 @@ const ADMIN_FILE = './adminRoles.json';
 let adminRoles = {};
 if (fs.existsSync(ADMIN_FILE)) {
     adminRoles = JSON.parse(fs.readFileSync(ADMIN_FILE));
+}
+
+// Load embed data from embeds.json
+const EMBEDS_FILE = './embeds.json';
+let embeds = {};
+if (fs.existsSync(EMBEDS_FILE)) {
+    embeds = JSON.parse(fs.readFileSync(EMBEDS_FILE));
 }
 
 // Versioning
@@ -97,6 +104,58 @@ client.on('messageCreate', async (message) => {
         } catch (err) {
             console.error(err);
             message.reply('There was an error giving you the role.');
+        }
+    }
+
+    // b!embed <embed_name>
+    if (command === 'embed') {
+        const embedName = args[0]?.toLowerCase();
+
+        if (!embedName || !embeds[embedName]) {
+            return message.reply('Invalid embed name or no embed found.');
+        }
+
+        const embedData = embeds[embedName];
+
+        // Create the embed
+        const embedMessage = {
+            content: embedData.content || null,
+            embeds: embedData.embeds || []
+        };
+
+        // Create buttons for the main rules if needed
+        if (embedName === 'mainrules') {
+            const row = new MessageActionRow().addComponents(
+                new MessageButton()
+                    .setCustomId('serverrules')
+                    .setLabel('📜 Server Rules')
+                    .setStyle('PRIMARY'),
+                new MessageButton()
+                    .setCustomId('voicechatrules')
+                    .setLabel('🎧 Voice Chat Rules')
+                    .setStyle('PRIMARY')
+            );
+
+            embedMessage.components = [row];
+        }
+
+        try {
+            const sentMessage = await message.channel.send(embedMessage);
+            if (embedName === 'mainrules') {
+                const filter = (interaction) => interaction.isButton() && interaction.user.id === message.author.id;
+                const collector = sentMessage.createMessageComponentCollector({ filter, time: 15000 });
+
+                collector.on('collect', async (interaction) => {
+                    if (interaction.customId === 'serverrules') {
+                        await interaction.reply({ embeds: embeds['serverrules'].embeds, ephemeral: true });
+                    } else if (interaction.customId === 'voicechatrules') {
+                        await interaction.reply({ embeds: embeds['vc_rules'].embeds, ephemeral: true });
+                    }
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            message.reply('There was an error sending the embed.');
         }
     }
 });
